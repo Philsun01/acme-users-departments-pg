@@ -12,14 +12,14 @@ const SQL = `
   DROP TABLE IF EXISTS departments;
 
   CREATE TABLE departments(
-    id UUID PRIMARY KEY,
+    id INT PRIMARY KEY,
     name VARCHAR(255) UNIQUE NOT NULL
   );
 
   CREATE TABLE users(
-    if UUID PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
-    category_id UUID REFERENCE departments(id)
+    id INT PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    department_id INT REFERENCES departments(id)
   );
 
   INSERT INTO departments(id, name)
@@ -27,14 +27,19 @@ const SQL = `
   INSERT INTO departments(id, name)
   values('12346','Marketing');
 
-  INSERT INTO users(id, name, department_id)
+  INSERT INTO users(id, name)
   values('5678','Howard');
-  INSERT INTO users(id, name, department_id)
+  INSERT INTO users(id, name)
   values('7890','Jimmy');
 
 `
 const syncAndSeed = async() => {
-  await client.query(SQL);
+  try{
+    await client.query(SQL);
+  }
+  catch(ex){
+    console.log(ex.message);
+  }
 };
 
 const findAllUsers = async() => {
